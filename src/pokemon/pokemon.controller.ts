@@ -6,8 +6,9 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
+import { CreatePokemonDto } from './dto/create-pokemon.dto';
+import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
 import { PokemonService } from './pokemon.service';
 
@@ -26,7 +27,7 @@ export class PokemonController {
   }
 
   @Post()
-  create(@Body() pokemonData) {
+  create(@Body() pokemonData: CreatePokemonDto) {
     return this.pokemonService.create(pokemonData);
   }
 
@@ -36,10 +37,7 @@ export class PokemonController {
   }
 
   @Patch(':id')
-  path(@Param('id') pokemonId: number, @Body() updateData) {
-    return {
-      updatedPokemon: pokemonId,
-      ...updateData,
-    };
+  path(@Param('id') pokemonId: number, @Body() updateData: UpdatePokemonDto) {
+    return this.pokemonService.update(pokemonId, updateData);
   }
 }
